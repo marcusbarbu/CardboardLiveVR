@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type = "text/css">
+	#left_eye {
+		float:left;
+		width:50%;
+		height:100%;
+	}
+	#right_eye {
+		float:right;
+		width:50%;
+		height:100%;
+	}
+	html,body{
+		height:100%;
+	}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script>
+	var xPosition, yPosition;
+	function accelerometerUpdate(e) {
+	   var aX = event.accelerationIncludingGravity.x*1;
+	   var aY = event.accelerationIncludingGravity.y*1;
+	   var aZ = event.accelerationIncludingGravity.z*1;
+	   //The following two lines are just to calculate a
+	   // tilt. Not really needed. 
+	   xPosition = Math.atan2(aY, aZ);
+	   yPosition = Math.atan2(aX, aZ);
+	}
+	$(document).ready(function(){
+		while(true){
+			accelerometerUpdate();
+			$("left").text(xPosition);
+			$("right").text(yPosition);
+		}
+	})
+</script>
+    
+</head>
+<body>
+
+<div id="left_eye" width = "100%" height = "100%">
+<!--<iframe width = "100%" height = "100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allowfullscreen></iframe>-->
+<img src = "../img/biopics/jasmine.jpg" width = "100%" height = "100%">
+<p id="left">asdf</p>
+</div>
+<div id="right_eye" width = "100%" height = "100%">
+<img src = "../img/biopics/jasmine.jpg" width = "100%" height = "100%">
+<p id = "right">asdf</p>
+<!--<iframe width = "100%" height = "100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allowfullscreen></iframe>-->
+</div>
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type = "text/css">
+	#left_eye {
+		float:left;
+		width:50%;
+		height:100%;
+		background-color: #000000;
+	}
+	#right_eye {
+		float:right;
+		width:50%;
+		height:100%;
+				background-color: #000000;
+
+	}
+	html,body{
+		height:100%;
+	}
+	</style>
+	<script>
+	var oldx;
+	var oldy;
+	var oldz;
+	var direction = "meep";
+	var direction2 = "meep";
+	var direction3 = "meep";
+	var lrcount = 0;
+	var udcount = 0;
+	var xmlhttp = new XMLHttpRequest();
+	var postTime = 0;
+	
+	var ratelimit = 700;
+
+	function motion_checker(event){
+		var date = new Date();
+		var x, y, z;
+		
+		x = event.accelerationIncludingGravity.x;
+		y = event.accelerationIncludingGravity.y;
+		z = event.accelerationIncludingGravity.z;
+
+		if(direction != "meep" && lrcount < 2){
+			direction = direction;
+			lrcount = lrcount + 1;
+		}
+		else{
+
+			if(oldy - y > 0.85){
+				direction = "left";
+			}
+			if (y - oldy > 0.85){
+				direction = "right";
+			}
+			lrcount = 0;
+		}
+
+		if(direction2 != "meep"){
+			direction2 = direction2;
+		}
+		else{
+
+			if(oldy - y > 0.35){
+				direction2 = "down";
+			}
+			else if (y - oldy > 0.35){
+				direction2 = "up";
+			}
+		}
+
+		oldx = x;
+		oldy = y;
+		olxz = z;
+		var left = document.getElementById("left_eye");
+		var right = document.getElementById("right_eye");
+		var curTime = date.getTime();
+		if (direction === "left"){
+			
+			left.style.backgroundColor = "green";
+			right.style.backgroundColor = "green";
+			if(curTime- postTime > ratelimit){
+				xmlhttp.open("POST","left",true);
+				xmlhttp.send();
+				postTime = curTime;
+			}
+			else{
+				var lasdf = document.getElementById('l');
+				lasdf.innerHTML = curTime;
+			}
+		}
+		else if (direction === "right"){
+			right.style.backgroundColor = "red";
+			left.style.backgroundColor = "red";
+			if(curTime - postTime > ratelimit){
+				xmlhttp.open("POST","right",true);
+				xmlhttp.send();
+				postTime = curTime;
+			}
+		}
+
+		else{
+			left.style.backgroundColor = "white";
+			right.style.backgroundColor = "white";
+		}
+
+
+	}
+
+	function main(){
+		if(window.DeviceMotionEvent){
+			window.addEventListener("devicemotion", motion_checker, false);
+		}
+	}
+	</script>
+	</head>
+
+<body onload="main();">
+<div id="left_eye" width = "100%" height = "100%">
+<p id="l">whatever</p>
+</div>
+<div id="right_eye" width = "100%" height = "100%">
+<p id="r">whatever</p>
+</div>
+</body>
+</html>
